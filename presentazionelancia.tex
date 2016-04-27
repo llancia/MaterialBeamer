@@ -1,0 +1,450 @@
+\documentclass{beamer}
+
+\usepackage[english]{babel}
+\usepackage{graphicx,hyperref,url, sapbeamer}
+\usepackage{braket}
+\usepackage{euler}
+\usepackage{listings}
+
+\lstdefinestyle{customsql}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  xleftmargin=\parindent,
+  language=SQL,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+\lstset{escapechar=@,style=customsql}
+
+\usefonttheme{professionalfonts} % using non standard fonts for beamer
+\usefonttheme{serif}
+\usepackage[no-math]{fontspec}
+\usepackage{xcolor}
+\setmainfont[Mapping=tex-text,  
+    BoldFont={Frutiger65-Bold.ttf}, 
+    ItalicFont={frutiger56-i.ttf},
+    BoldItalicFont={frutiger66-bi.ttf}]{frutiger55.ttf}
+
+% The title of the presentation:
+%  - first a short version which is visible at the bottom of each slide;
+%  - second the full title shown on the title slide;
+\title[AtacSql]{
+   AtacSql }
+
+% Optional: a subtitle to be dispalyed on the title slide
+\subtitle{Project 1 for DMDS course}
+
+% The author(s) of the presentation:
+%  - again first a short version to be displayed at the bottom;
+%  - next the full list of authors, which may include contact information;
+\author[L. Lancia \& A. Gallo]{
+  Lorenzo Lancia \\Alessandro Gallo\medskip
+  } 
+  
+\titlegraphic{\includegraphics[width=\textwidth]{atac-logo}}
+
+% The institute:
+%  - to start the name of the university as displayed on the top of each slide
+%    this can be adjusted such that you can also create a Dutch version
+%  - next the institute information as displayed on the title slide
+\institute[Sapienza Università di Roma]{
+  Master Degree in Data Science \\
+  Sapienza Università di Roma}
+
+% Add a date and possibly the name of the event to the slides
+%  - again first a short version to be shown at the bottom of each slide
+%  - second the full date and event name for the title slide
+\date[\today]{
+ \today}
+
+
+
+
+\providecommand{\di}{\mathop{}\!\mathrm{d}}
+\providecommand*{\der}[3][]{\frac{d\if?#1?\else^{#1}\fi#2}{d #3\if?#1?\else^{#1}\fi}} 
+ \providecommand*{\pder}[3][]{% 
+    \frac{\partial\if?#1?\else^{#1}\fi#2}{\partial #3\if?#1?\else^{#1}\fi}% 
+  }
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{Indice}
+
+  \tableofcontents
+\end{frame}
+
+% Section titles are shown in at the top of the slides with the current section 
+% highlighted. Note that the number of sections determines the size of the top 
+% bar, and hence the university name and logo. If you do not add any sections 
+% they will not be visible.
+\section{Introduction}
+\begin{frame}
+  \frametitle{Introduction}
+  \begin{itemize}
+  \item Aim of this project was to build a simple relational database
+    and executing some queries.
+
+    \item We used open data about public transport network of city of Rome
+    provided by ATAC. \url{http://www.agenziamobilita.roma.it/it/progetti/open-data/dataset.html}
+  
+   \item The DBMS used is MySql\footnote{Ver 14.14 Distrib 5.7.11}
+  \end{itemize}
+
+ \end{frame}
+\section{Open Data}
+\begin{frame}
+  \frametitle{Open Data}
+  ATAC provides the data in the GTFS format. 
+  
+ \begin{block}{What is GTFS?}
+The General Transit Feed Specification (GTFS) defines a common format
+for public transportation schedules and associated geographic
+information. \footnote[frame]{\url{https://developers.google.com/transit/gtfs/\#how-do-i-start
+  }}
+\end{block}
+
+Unfourtunatly not all tables required in GTFS standard are available in the
+ATAC dataset.
+ \end{frame}
+\begin{frame}[fragile]
+\frametitle{File Used}
+\begin{table}
+  \centering
+\small
+  \begin{tabular}{p{3cm} p{8cm} }
+ \verb|stops.txt| & Individual locations where vehicles pick up or drop off passengers.\\
+\verb|routes.txt| & Transit routes. A route is a group of trips that are displayed to riders as a single service.\\
+\verb|trips.txt|	& Trips for each route. A trip is a sequence of two or more stops that occurs at specific time.\\
+\verb|stop_times.txt| & Times that a vehicle arrives at and departs
+                        from individual stops for each trip.\\
+\verb|calendar_dates.txt| & Exceptions for the service IDs defined in
+                            the \verb!calendar.txt! file. If  \verb!calendar_dates.txt! includes ALL dates of service, this file may be specified instead of \verb!calendar.txt!.\\
+  \end{tabular}
+  \caption{Data Set files}
+  \label{tab:tab1}
+\end{table}
+\end{frame}
+\section{Schema}
+\begin{frame}[fragile]
+  \frametitle{Table routes}
+  \begin{lstlisting}
+CREATE TABLE `routes` (
+  `route_id` varchar(5) DEFAULT NULL,
+  `agency_id` varchar(8) DEFAULT NULL,
+  `route_short_name` varchar(5) DEFAULT NULL,
+  `route_long_name` varchar(10) DEFAULT NULL,
+  `route_type` int(1) DEFAULT NULL,
+  `route_color` varchar(6) DEFAULT NULL,
+  `route_text_color` int(6) DEFAULT NULL,
+  KEY `route_id` (`route_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  \end{lstlisting}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Table stops}
+  \begin{lstlisting}
+CREATE TABLE `stops` (
+  `stop_id` varchar(5) NOT NULL DEFAULT '',
+  `stop_name` varchar(42) NOT NULL DEFAULT '',
+  `stop_lat` decimal(26,10) DEFAULT NULL,
+  `stop_lon` decimal(26,10) DEFAULT NULL,
+  `location_type` int(1) DEFAULT NULL,
+  `parent_station` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`stop_id`,`stop_name`),
+  KEY `stop_id` (`stop_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  \end{lstlisting}  
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Table trips}
+  \begin{lstlisting}
+CREATE TABLE `trips` (
+  `route_id` varchar(5) DEFAULT NULL,
+  `service_id` varchar(9) DEFAULT NULL,
+  `trip_id` varchar(11) DEFAULT NULL,
+  `direction_id` int(1) DEFAULT NULL,
+  `shape_id` bigint(10) DEFAULT NULL,
+  KEY `trip_id` (`trip_id`),
+  KEY `route_id` (`route_id`),
+  CONSTRAINT `trips_ibfk_1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`route_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  \end{lstlisting}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Table times}
+  \begin{lstlisting}
+CREATE TABLE `times` (
+  `trip_id` varchar(11) DEFAULT NULL,
+  `arrival_time` time DEFAULT NULL,
+  `departure_time` time DEFAULT NULL,
+  `stop_id` varchar(5) DEFAULT NULL,
+  `stop_sequence` int(11) DEFAULT NULL,
+  KEY `trip_id` (`trip_id`),
+  KEY `stop_id` (`stop_id`),
+  CONSTRAINT `times_ibfk_1` FOREIGN KEY (`trip_id`) REFERENCES `trips` (`trip_id`),
+  CONSTRAINT `times_ibfk_2` FOREIGN KEY (`stop_id`) REFERENCES `stops` (`stop_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  \end{lstlisting}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Table calendar}
+  \begin{lstlisting}
+CREATE TABLE `calendar` (
+  `service_id` varchar(9) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `exception_type` int(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+\end{lstlisting}
+\end{frame}
+\section{Query}
+\begin{frame}[fragile]
+\frametitle{Query}
+1) List all routes that stops at "Policlinico"
+\begin{columns}
+\column{0.5\textwidth}
+\begin{lstlisting}
+SELECT DISTINCT route_id
+FROM times join stops join trips 
+ON times.`stop_id`=stops.`stop_id` 
+AND trips.`trip_id`=times.`trip_id`
+WHERE stops.`stop_name` = "POLICLINICO"
+\end{lstlisting}
+\column{0.5\textwidth}
+results:
+N2L
+N13
+490
+495
+61
+N2
+649
+2
+19
+3
+N10
+88
+N11
+MEB
+MEB1
+\end{columns}
+\end{frame}
+\begin{frame}[fragile]
+2) List all routes that a stop at a stop containing the word "DE
+LOLLIS" 
+\begin{columns}
+\column{0.5\textwidth}
+\begin{lstlisting}
+SELECT DISTINCT route_id, stop_name 
+FROM times JOIN stops JOIN trips 
+ON times.`stop_id`=stops.`stop_id` 
+AND trips.`trip_id`=times.`trip_id`
+WHERE stops.`stop_name` LIKE "%DE LOLLIS%"
+\end{lstlisting}
+\column{0.5\textwidth}
+results: 
+\begin{verbatim}
+C3 DE LOLLIS- IRPINI
+N10 DE LOLLIS- IRPINI
+492 DE LOLLIS- IRPINI
+C3 DE LOLLIS- VERANO
+N10 DE LOLLIS- VERANO
+C2 DE LOLLIS- VERANO
+492 DE LOLLIS- VERANO
+2 VERANO- DE LOLLIS
+19 VERANO- DE LOLLIS
+3 VERANO- DE LOLLIS
+71 VERANO- DE LOLLIS
+\end{verbatim}
+\end{columns}
+\end{frame}
+\begin{frame}[fragile]
+ 3) List the stops of the autobus 445
+ \begin{columns}
+\column{0.5\textwidth}
+   \begin{lstlisting}
+SELECT DISTINCT stop_name
+FROM stops, times, trips
+WHERE stops.stop_id = times.stop_id
+AND trips.trip_id = times.trip_id
+AND `route_id` = "445"
+\end{lstlisting}
+\column{0.5\textwidth}
+\small
+\begin{verbatim}
+BOLOGNA
+VENTUNO APRILE- VILLA RICOTTI
+VENTUNO APRILE- NARDINI
+LANCIANI- BOLDETTI
+LANCIANI- DE PETRA
+MONTI TIBURTINI- NOMENTANA
+MONTI DI PIETRALATA
+CURIONI- DE LORENZO
+CURIONI- COLLINA LANCIANI
+CURIONI
+CURIONI- PENTA
+CURIONI- REPOSSI
+LARGO LANCIANI
+LANCIANI- WINCKELMANN
+VENTUNO APRILE- RICOTTI
+CARACI- MINISTERO INFRASTRUTTURE TRASPORTI
+\end{verbatim}
+ \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+ 4) How many trains of MEB runs in a day?
+ \begin{columns}
+\column{0.5\textwidth}
+   \begin{lstlisting}
+SELECT count(trip_id), calendar.date
+FROM trips join calendar
+ON trips.service_id = calendar.service_id
+WHERE route_id = "MEB"
+GROUP BY calendar.date 
+LIMIT 7
+\end{lstlisting}
+\column{0.5\textwidth}
+\small
+\begin{verbatim}
+count(trip_id) date
+375 2016-03-14
+375 2016-03-15
+375 2016-03-16
+375 2016-03-17
+400 2016-03-18
+267 2016-03-19
+241 2016-03-20
+\end{verbatim}
+ \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+ 5) Which line departs from ``VERANO'' after 5pm
+ \begin{columns}
+\column{0.5\textwidth}
+   \begin{lstlisting}
+SELECT route_id, departure_time
+FROM trips JOIN times JOIN stops 
+ON times.stop_id = stops.stop_id 
+AND times.trip_id = trips.trip_id
+WHERE stop_name = "VERANO"
+AND departure_time = (
+SELECT MIN(`departure_time`) 
+FROM times JOIN stops 
+ON times.stop_id = stops.stop_id 
+WHERE stop_name = "VERANO" 
+AND `departure_time`>"17:00:00")
+\end{lstlisting}
+\column{0.5\textwidth}
+\small
+\begin{verbatim}
+route_id departure_time
+3 17:01:00
+71 17:01:00
+163 17:01:00
+545 17:01:00
+542 17:01:00
+\end{verbatim}
+ \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+6) Which are the three most frequented stops on sunday?
+ \begin{columns}
+\column{0.5\textwidth}
+   \begin{lstlisting}
+SELECT  stop_name,  count(times.trip_id) AS cnt
+FROM times JOIN stops JOIN calendar JOIN trips
+ON times.stop_id = stops.stop_id
+AND calendar.service_id = trips.service_id
+AND trips.trip_id = times.trip_id
+WHERE date = "2016-03-20"
+GROUP BY stop_name ORDER BY cnt DESC LIMIT 3
+\end{lstlisting}
+\column{0.5\textwidth}
+\small
+\begin{verbatim}
+TERMINI 4158
+PIAZZA VENEZIA 2770
+CONCA D'ORO 2493
+\end{verbatim}
+ \end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]
+ 7) List all of stops served by nocturne bus
+ \begin{columns}
+\column{0.5\textwidth}
+   \begin{lstlisting}
+SELECT distinct stop_name, route_id 
+FROM trips, times, stops 
+WHERE trips.trip_id = times.trip_id 
+AND stops.stop_id = times.stop_id 
+AND route_id LIKE "N%"
+\end{lstlisting}
+\column{0.5\textwidth}
+\small
+\begin{verbatim}
+BATTISTINI- SORIA N1
+BOCCEA- BATTISTINI N1
+BOCCEA- BRA N1
+BOCCEA- VAL CANNUTA N1
+BOCCEA- GREGORIO TREDICESIMO N1
+BOCCEA/URBANO SECONDO N1
+BOCCEA- GALEOTTI N1
+CIRCONVALLAZIONE CORNELIA- BOLOGNINI N1
+CIRCONVALLAZIONE CORNELIA- AURELIA N1
+...
+CAVE ARDEATINE 	N9
+MARMORATA- VANVITELLI	N9
+ARA COELI- PIAZZA VENEZIA	N9
+TERME DIOCLEZIANO	N9
+\end{verbatim}
+ \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+ 8) List all routes that connects Rebibbia to Tiburtina Station
+ \begin{columns}
+\column{0.5\textwidth}
+   \begin{lstlisting}
+SELECT DISTINCT route_id
+FROM times t JOIN stops s JOIN trips tr 
+ON t.`trip_id` = tr.trip_id 
+AND s.stop_id = t.stop_id
+WHERE s.stop_name LIKE "%REBIBBIA%"
+AND tr.route_id = ANY (
+SELECT distinct tr.route_id 
+FROM times t JOIN stops s JOIN trips tr 
+ON t.trip_id = tr.trip_id AND s.stop_id = t.stop_id
+WHERE s.stop_name = "TIBURTINA" 
+OR s.stop_name = "STAZIONE TIBURTINA"
+)
+\end{lstlisting}
+\column{0.5\textwidth}
+\small
+\begin{verbatim}
+120F
+163
+N2
+N23
+MEB
+\end{verbatim}
+ \end{columns}
+\end{frame}
+
+\end{document}
