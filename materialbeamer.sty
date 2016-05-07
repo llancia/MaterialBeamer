@@ -18,17 +18,25 @@
 %%%
 
 % Layout scheme for outer elements: split header and footer
-\useoutertheme{split}
+%\useoutertheme{split}
 
 % Color scheme for outer elements: use background colors
 %\usecolortheme{whale}
 
 % Layout scheme for inner elements: rounded elements
-\useinnertheme{rounded} 
+%\useinnertheme{rounded} 
 
 % Color scheme for inner elements: use foreground colors
-\usecolortheme{orchid}
+%\usecolortheme{orchid}
 
+\mode<presentation>
+
+\useoutertheme[subsection=false]{smoothbars}
+\useinnertheme[shadow=false]{rounded}
+\usecolortheme{orchid}
+\usecolortheme{whale}
+
+\setbeamerfont{block title}{size={}}
 
 %%%
 %%% Tweak definitions of inner theme to match personal preferences (MODIFY THESE)
@@ -56,8 +64,6 @@
 \setbeamertemplate{navigation symbols}{}
 
 
-%shadowing
-\usepackage[skins]{tcolorbox}
 
 
 
@@ -83,10 +89,10 @@
 %  color(0pt)=(sapblue);
 %  color(\paperwidth)=(sapblue)}
 
+%shadowing
 \AtBeginDocument{
-  \pgfdeclareverticalshading{beamer@topshade}{\paperwidth}{%
-    color(0pt)=(bg);
-    color(4pt)=(black!50!bg)}
+\pgfdeclareverticalshading{b@matshade}{\the\paperwidth}
+        {rgb(0pt)=(1,1,1); rgb(3pt)=(0.75,0.75,0.75)}
 }
 
 % Footline: AUTHOR | TITLE | DATE FRAMENUMBER
@@ -98,7 +104,7 @@
 \end{minipage}%
 \begin{minipage}[t]{0.48\textwidth}%
 %
-\hfill\insertshorttitle\hskip10pt%
+\hfill\insertframenumber{} / \inserttotalframenumber\hskip10pt%
 %
 \end{minipage}%
 \end{beamercolorbox}%
@@ -108,32 +114,31 @@
 
 \defbeamertemplate*{headline}{mat theme}{%
   \leavevmode%
-  \@tempdimb=2.4375ex%
-    \multiply\@tempdimb by\beamer@sectionmax%
-  \pgfdeclareimage[height=.9\@tempdimb]{logo}{sap_logo}%
-  \logo{\pgfuseimage{logo}}%
-  \ifdim\@tempdimb>0pt%
-    \advance\@tempdimb by 1.125ex%
-    \begin{beamercolorbox}[wd=\paperwidth,ht=\@tempdimb, shadow=true]{section in head/foot}%
-      \vbox to\@tempdimb{\vfil \hskip10pt \insertshorttitle \hskip10pt \insertsectionnavigationhorizontal{0.8 \paperwidth}{}{\hskip0pt plus1filll}\vfil}%
+    \begin{beamercolorbox}[wd=\paperwidth]{section in head/foot}%
+       \vskip10pt \hskip10pt \insertshorttitle \hfill \insertsectionnavigationhorizontal{0.4\paperwidth}{}{\hskip0pt plus1filll}\vskip10pt%
+      \ifx\insertframesubtitle\@empty%
+      \pgfuseshading{b@matshade}
+      \fi
     \end{beamercolorbox}%
+               %
     %\begin{beamercolorbox}[wd=.4\paperwidth,ht=\@tempdimb,right]{subsection in head/foot}%
     %  \vbox to\@tempdimb{\vfil\vfil\textbf{\footnotesize\insertshortinstitute~~}\vfil}%
     %\end{beamercolorbox}% 
-  \fi%
+  
 }
 
 
+\setbeamerfont{frametitle}{size=\scriptsize, parent=structure}
 
 
 \defbeamertemplate*{frametitle}{mat theme}{%
-  \nointerlineskip%
-  \setbeamercolor{titlebar}{fg=white,bg=matblue}%
-\begin{beamercolorbox}[sep=1em,wd=\paperwidth,ht=5ex]{titlebar}%
-\usebeamerfont{frametitle} \insertframetitle\par%
 \nointerlineskip%
+\setbeamercolor{titlebar}{fg=white,bg=matblue}%
+\begin{beamercolorbox}[wd=\paperwidth]{titlebar}%
+\vskip4pt\hskip10pt\insertframetitle\vskip5pt%
+     \pgfuseshading{b@matshade}%
 \end{beamercolorbox}
-  }
+}
   
   
   
@@ -149,20 +154,18 @@
 \end{beamercolorbox}
 \nointerlineskip
 
-\begin{minipage}[t]{0.5\textwidth}
-%\setbeamercolor{postit}{fg=sapred}
-\begin{beamercolorbox}[sep=1em,wd=0.5\paperwidth,ht=3cm,dp=3cm]{postit}
+
+\setbeamercolor{postit}{fg=white, bg=matblue}
+\begin{beamercolorbox}[sep=1em,wd=\paperwidth,ht=3cm,dp=3cm]{postit}
+\begin{minipage}[t]{0.6\textwidth}
 \usebeamerfont{title} {\Huge \inserttitle} \par
 \usebeamerfont{subtitle} {\insertsubtitle}
-\end{beamercolorbox}
+
 
 \end{minipage}%
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
 \inserttitlegraphic
 \end{minipage}
-
-%\setbeamercolor{postit}{fg=sapred}
-\begin{beamercolorbox}[sep=1em,wd=0.5\paperwidth,ht=3cm,dp=3cm]{postit}
-
 \end{beamercolorbox}
+%\setbeamercolor{postit}{fg=sapred}
 }
