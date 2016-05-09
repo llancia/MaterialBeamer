@@ -7,4 +7,5 @@
 *.snm
 *synctex.gz
 *.toc
-*.vrb.DS_Store
+*.vrb
+.DS_Store
