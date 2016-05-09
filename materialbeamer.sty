@@ -11,6 +11,9 @@
 %
 % See the file doc/licenses/LICENSE for more details.
 
+\usepackage[no-math]{fontspec}
+\usepackage{roboto}
+
 
 
 %%%
@@ -98,24 +101,25 @@
 % Footline: AUTHOR | TITLE | DATE FRAMENUMBER
 
 \defbeamertemplate*{footline}{mat theme}{%
-\begin{beamercolorbox}[wd=\paperwidth,ht=2.25ex,dp=1ex]{title in head/foot}%
+\begin{beamercolorbox}[wd=\paperwidth,ht=5ex,dp=2.25ex]{title in head/foot}%
 \begin{minipage}[t]{0.48\textwidth}%
 \hskip10pt\insertshortauthor%
 \end{minipage}%
 \begin{minipage}[t]{0.48\textwidth}%
 %
-\hfill\insertframenumber{} / \inserttotalframenumber\hskip10pt%
+\hfill\insertframenumber{} / \inserttotalframenumber\hskip10pt\vfill%
 %
 \end{minipage}%
 \end{beamercolorbox}%
-\vskip0pt%
+\vfill%
 }
 
 
 \defbeamertemplate*{headline}{mat theme}{%
   \leavevmode%
     \begin{beamercolorbox}[wd=\paperwidth]{section in head/foot}%
-       \vskip10pt \hskip10pt \insertshorttitle \hfill  \insertsectionnavigationhorizontal{.8\textwidth}{\hskip0pt plus1filll}{}
+       \vskip10pt \hskip10pt \insertshorttitle \hfill \robotocondensed
+ \insertsectionnavigationhorizontal{.8\textwidth}{\hskip0pt plus1filll}{}
 \vskip10pt%
       \ifx\insertframesubtitle\@empty%
       \pgfuseshading{b@matshade}
@@ -136,7 +140,7 @@
 \nointerlineskip%
 \setbeamercolor{titlebar}{fg=white,bg=matblue}%
 \begin{beamercolorbox}[wd=\paperwidth]{titlebar}%
-\vskip4pt\hskip10pt\insertframetitle\vskip5pt%
+\vskip4pt\hskip10pt \robotocondensed\insertframetitle\vskip5pt%
      \pgfuseshading{b@matshade}%
 \end{beamercolorbox}
 }
@@ -151,7 +155,8 @@
 %\setbeamercolor{thead}{fg=white,bg=sapred}
 \begin{beamercolorbox}[sep=1em,wd=\paperwidth, ht=2.5cm, dp=0.5cm,right ]{thead}
 \usebeamerfont{author} \insertauthor\par
-\usebeamerfont{institute}\insertinstitute\par 
+\usebeamerfont{institute}\robotocondensed
+\insertinstitute\par 
 \end{beamercolorbox}
 \nointerlineskip
 
@@ -159,8 +164,10 @@
 \setbeamercolor{postit}{fg=white, bg=matblue}
 \begin{beamercolorbox}[sep=1em,wd=\paperwidth,ht=3cm,dp=3cm]{postit}
 \begin{minipage}[t]{0.6\textwidth}
-\usebeamerfont{title} {\Huge \inserttitle} \par
-\usebeamerfont{subtitle} {\insertsubtitle}
+\usebeamerfont{title} {\Huge
+ \inserttitle} \par
+\usebeamerfont{subtitle} {\robotocondensed
+ \insertsubtitle}
 
 
 \end{minipage}%
