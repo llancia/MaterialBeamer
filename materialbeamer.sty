@@ -118,9 +118,9 @@
 \defbeamertemplate*{headline}{mat theme}{%
   \leavevmode%
     \begin{beamercolorbox}[wd=\paperwidth]{section in head/foot}%
-       \vskip10pt \hskip10pt \insertshorttitle \hfill \robotocondensed
+       \vskip5pt \hskip10pt \insertshorttitle \hfill \robotocondensed
  \insertsectionnavigationhorizontal{.8\textwidth}{\hskip0pt plus1filll}{}
-\vskip10pt%
+\vskip5pt%
       \ifx\insertframesubtitle\@empty%
       \pgfuseshading{b@matshade}
       \fi
@@ -133,14 +133,14 @@
 }
 
 
-\setbeamerfont{frametitle}{size=\scriptsize, parent=structure}
+\setbeamerfont{frametitle}{size=\normalsize, parent=structure}
 
 
 \defbeamertemplate*{frametitle}{mat theme}{%
 \nointerlineskip%
 \setbeamercolor{titlebar}{fg=white,bg=matblue}%
-\begin{beamercolorbox}[wd=\paperwidth]{titlebar}%
-\vskip4pt\hskip10pt \robotocondensed\insertframetitle\vskip5pt%
+\begin{beamercolorbox}[wd=\paperwidth, ht=5ex]{titlebar}%
+\hskip10pt \robotocondensed\insertframetitle\vfill%
      \pgfuseshading{b@matshade}%
 \end{beamercolorbox}
 }
