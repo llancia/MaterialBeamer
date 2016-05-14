@@ -46,3 +46,35 @@ The user experience of Fb comes from rapid, efficient and scalable access to the
 \end{columns}%
 \end{frame}%
 
+\begin{frame}
+\frametitle{Before Tao}
+ 	Facebook was storing the social graph to MySql
+
+ 	Quering it from PHP
+
+ 	Storing result in memcache
+
+ 	\hrule 
+
+ 	Over time Fb deprecated direct access to MySQL in favor of a graph (assosiation, nodes) abstraction
+\end{frame}
+
+\begin{frame}
+\frametitle{Limits}
+    \begin{itemize}
+    	\item Inefficient edge list
+    	\item Distributed Control Logic
+    	\item Expensive read-after-write consistency
+    \end{itemize}
+Also they want to access social graph from non-PHP services
+\end{frame}
+
+\begin{frame}
+\frametitle{TAO's Goals}
+	\begin{itemize}
+		\item Provides basic access to nodes and edges
+		\item Read optimization
+		\item Favour availability over consistency
+		\item Able to tolerate fast changing of the data
+	\end{itemize}
+\end{frame}
