@@ -64,9 +64,9 @@ The user experience of Fb comes from rapid, efficient and scalable access to the
 \begin{frame}
 \frametitle{Limits}
     \begin{itemize}
-    	\item Inefficient edge list
-    	\item Distributed Control Logic
-    	\item Expensive read-after-write consistency
+    	\item Operations on lists are inefficient in memcache (update whole list)
+    	\item Complexity on clients managing cache
+    	\item Hard to offer read-after-write consistency
     \end{itemize}
 Also they want to access social graph from non-PHP services
 \end{frame}
@@ -74,12 +74,12 @@ Also they want to access social graph from non-PHP services
 \begin{frame}
 \frametitle{TAO's Goals}
 	\begin{itemize}
-		\item Provides basic access to nodes and edges
+		\item Efficiency at Scale
 		\pause
-		\item Read optimization
+		\item Low read latency
 		\pause
-		\item Favour availability over consistency
+		\item Timeliness of writes
 		\pause
-		\item Able to tolerate fast changing of the data
+		\item High read availability
 	\end{itemize}
 \end{frame}
