@@ -11,12 +11,20 @@
 
 \begin{frame}[fragile]
 \frametitle{Objects}
-   
+\onslide<1->
 \begin{itemize}
 	\item Typed nodes (type is denoted by \verb|otype|)
-	\item Identified by 64-bit integers. (unique) 
-	\item Contains data in the form of key-value pairs.
-	\item Models users and repeatable actions (eg comments).
+	\item Identified by 64-bit integers (unique) 
+	\item Contains data in the form of key-value pairs
+	\item Models users and repeatable actions (e.g. comments)
+\end{itemize}
+\onslide<2->
+API for objects:
+\begin{itemize}
+	\item Allocate new object 
+	\item retrieve
+	\item update
+	\item delete
 \end{itemize}
  
 
