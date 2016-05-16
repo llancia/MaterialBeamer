@@ -114,6 +114,38 @@
 \vfill%
 }
 
+\usepackage{tcolorbox}  
+\tcbuselibrary{skins}                                  %  preamble 
+\usepackage{tikz}                                      %
+\usetikzlibrary{shadows,shadings}                      %
+
+\tikzset{myshadow/.style={                             % custom shadow with tikz
+         opacity=.16,
+         shadow xshift=0.01,
+         shadow yshift=-0.02,
+         shade,
+         shading=axis,
+         shading angle=230}
+         } 
+\tcbset{                                               % set a custom tcolorbox  
+        skin=enhanced,                                 % enables use of shadows
+        frame style={fill=matblue,drop shadow={myshadow}}, % sets the frame color and the shadow properties
+        bottom=7mm,                                    % distance between the body text and the bottom frame
+        top=5pt,                                      % distance between the body text and the top frame
+        boxrule=0mm,                                   % frame width
+        bottomtitle=2mm,                               % distance between the title text and the bottom title frame               
+        toptitle=2mm,                                  % distance between the title text and the top title frame
+        lefttitle=10pt                                  % title text left margin
+}  
+
+\setbeamercolor{block body}{bg=matbluelight, fg=black}
+\defbeamertemplate*{block begin}{mat theme}
+{
+ \begin{tcolorbox}[title=\large \insertblocktitle]
+  }
+\defbeamertemplate*{block end}{mat theme}  
+{\end{tcolorbox}\vskip\smallskipamount}
+
 
 \defbeamertemplate*{headline}{mat theme}{%
   \leavevmode%
