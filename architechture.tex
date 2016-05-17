@@ -57,7 +57,20 @@
 \end{frame}
 
 \begin{frame}[c]\frametitle{Leaders \& Followers}
-    
+   	\includegraphics[width=\textwidth]{figs/followers_leader.jpeg}
+\end{frame}
+
+\begin{frame}[c]\frametitle{Leaders \& Followers}
+    \begin{itemize}
+    	\item Followers forward all writes and read cache misses to the leader tier
+		\item Leader sends async cache maintenance messages to follower tier
+		\begin{itemize}
+			\item Eventually Consistent
+		\end{itemize}
+		\item If a follower issues a write, the follower’s cache is updated synchronously
+		\item Each update message has a version number
+		\item Leader serializes writes
+    \end{itemize}
 
 
 \end{frame}
