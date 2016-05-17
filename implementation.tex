@@ -2,6 +2,24 @@
 \section{Implementation}
 \begin{frame}
 \frametitle{Implementation}
+To achieve performance and storage efficiency Fb have implemented some optimizations to servers and DBMS's. 
+\end{frame}
+
+\begin{frame}[c]\frametitle{Caching Servers}
+\begin{itemize}
+	\item Memory is partitioned into arenas by association type
+	\begin{itemize}
+		\item This mitigates the issues of poorly behaved association types
+	\end{itemize}
+	\item They can also change the lifetime for important associations
+	\item Small items have a lot of pointer overhead
+	\item They use a directly mapped 8-way LRU cache
+	\item Used for association counts
+
+\end{itemize}
     
+
+
+
 
 \end{frame}
