@@ -34,3 +34,13 @@ Exceptions:
 	\item Associations counts are stored in a separate table
 \end{itemize}
 \end{frame}
+
+\begin{frame}[c]\frametitle{Cache Sharding}
+    Shards are mapepd to chache server using consistent hashing (like dynamo)
+
+    This can lead to \emph{imbalances}, so TAO use shard cloning to rebalance the load
+
+    There are also \emph{popular object} that can be queried a lot more often than others.
+
+    TAO says to the clients to cache them these objects
+\end{frame}
