@@ -10,16 +10,22 @@ To achieve performance and storage efficiency Fb have implemented some optimizat
 	\item Memory is partitioned into arenas by association type
 	\begin{itemize}
 		\item This mitigates the issues of poorly behaved association types
+		\item They can also change the lifetime for important associations
 	\end{itemize}
-	\item They can also change the lifetime for important associations
-	\item Small items have a lot of pointer overhead
-	\item They use a directly mapped 8-way LRU cache
-	\item Used for association counts
+	\item Small items with fixed size have a lot of pointer overhead
+	\begin{itemize}
+		\item They use a directly mapped 8-way LRU cache
+		\item Used for association counts
+	\end{itemize}
+\end{itemize}    
+\end{frame}
 
-\end{itemize}
-    
-
-
+\begin{frame}[c]\frametitle{MySql Mapping}
+    We divided the space of objects and associations into \emph{shards}. Each \emph{shard}:
+    \begin{itemize}
+    	\item is assigned to a logical DB
+    	\item a
+    \end{itemize}
 
 
 \end{frame}
