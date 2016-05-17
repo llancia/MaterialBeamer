@@ -1,6 +1,18 @@
 %!TEX root = presentazionelancia.tex
 \section{Consistency \& Failures}
 \begin{frame}[t]\frametitle{Consistency}
+	Under normal operation, TAO is \emph{eventually consistent}
+
+	Replication lag usually < 1"
+
+	Race conditions are resolved by using version numbers
+
+	In special ``\emph{critical}" situation a read can be forwarded to database to ensure to read from a consistent source of truth. (Useful for auth procedures)
+
+
+\end{frame}
+
+\begin{frame}[c]\frametitle{Failures}
     
 
 

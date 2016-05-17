@@ -44,3 +44,20 @@ Exceptions:
 
     TAO says to the clients to cache them these objects
 \end{frame}
+
+\begin{frame}[fragile]\frametitle{High-Degree Objects}
+    Some object have a lot of associations (remember there were a limit of 6000?)
+    \begin{itemize}
+    	\item TAO can't cache all associations list
+    	\item Requests will always end to Db
+    \end{itemize}
+    so
+    \begin{itemize}
+    	\item For \verb!assoc_count!, the edge direction is chosen using the lower degree between source and destination object
+    	\item For \verb!assoc_get! query, only associations whose time~ >~ object's ~creation~ time
+    \end{itemize}
+
+
+
+
+\end{frame}
