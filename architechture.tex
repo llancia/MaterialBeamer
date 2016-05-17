@@ -71,6 +71,41 @@
 		\item Each update message has a version number
 		\item Leader serializes writes
     \end{itemize}
+\end{frame}
+
+\begin{frame}[c]\frametitle{Leaders \& Followers}
+    \begin{center}
+    \includegraphics<1>[height=0.5\textwidth]{figs/master_slave1.jpg}    	
+    \includegraphics<2>[height=0.5\textwidth]{figs/master_slave2.jpg}
+    \end{center}
+    
+\end{frame}
+
+\begin{frame}[c]\frametitle{Scaling Geographically}
+    \onslide<1->\textbf{Problem: }Network latencies are not low in a multi Data Centers environment
+
+
+    \onslide<2->Considering that read misses are more common than writes in the follower tier
+
+    \onslide<3->\textbf{Solution: }Handles read cache miss locally
+\end{frame}
+
+\begin{frame}[c]\frametitle{Master \& Slave Regions}
+Fb cluster together DC in regions (with low intra region latency)
+    \begin{itemize}
+    	\item Each region have a full copy of the social graph
+    	\item Region are defined master or slave for each shard
+    	\item Followers send read misses and write requests to the local leader
+    	\item Local leaders service read misses locally
+		\item Slave leaders forward writes to the master shard
+		\item The slave leader will update it’s cache ahead of the async updates to the persistent store
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[c]\frametitle{Overall Architecture}
+    \begin{center}
+    	\includegraphics[width=\textwidth]{figs/tao_geo.png}
+    \end{center}
 
 
 \end{frame}
