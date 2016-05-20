@@ -2,7 +2,7 @@
 \section{Implementation}
 \begin{frame}
 \frametitle{Implementation}
-To achieve performance and storage efficiency Fb have implemented some optimizations to servers and DBMS's. 
+To achieve performance and storage efficiency Fb have implemented some optimizations to servers.  
 \end{frame}
 
 \begin{frame}[c]\frametitle{Caching Servers}
@@ -14,7 +14,7 @@ To achieve performance and storage efficiency Fb have implemented some optimizat
 	\end{itemize}
 	\item Small items with fixed size have a lot of pointer overhead
 	\begin{itemize}
-		\item They use a directly mapped 8-way LRU cache
+		\item stored separately
 		\item Used for association counts
 	\end{itemize}
 \end{itemize}    
