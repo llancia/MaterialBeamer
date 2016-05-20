@@ -75,8 +75,9 @@
 
 \begin{frame}[c]\frametitle{Leaders \& Followers}
     \begin{center}
-    \includegraphics<1>[height=0.5\textwidth]{figs/master_slave1.jpg}    	
-    \includegraphics<2>[height=0.5\textwidth]{figs/master_slave2.jpg}
+    \includegraphics<1>[height=0.5\textwidth]{figs/master_slave0.jpg}
+    \includegraphics<2>[height=0.5\textwidth]{figs/master_slave1.jpg}    	
+    \includegraphics<3>[height=0.5\textwidth]{figs/master_slave2.jpg}
     \end{center}
     
 \end{frame}
@@ -99,12 +100,13 @@ Fb cluster together DC in regions (with low intra region latency)
     	\item Local leaders service read misses locally
 		\item Slave leaders forward writes to the master shard
 		\item Cache invalidation message are embedded into db replication stream
+        \item Slave leader will update it’s cache as soon as write are forwarded to master
     \end{itemize}
 \end{frame}
 
 \begin{frame}[c]\frametitle{Overall Architecture}
     \begin{center}
-    	\includegraphics[width=\textwidth]{figs/tao_geo.png}
+    	\includegraphics[width=\textwidth]{figs/tao_geo_upscaled.png}
     \end{center}
 
 
