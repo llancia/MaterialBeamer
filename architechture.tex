@@ -98,7 +98,7 @@ Fb cluster together DC in regions (with low intra region latency)
     	\item Followers send read misses and write requests to the local leader
     	\item Local leaders service read misses locally
 		\item Slave leaders forward writes to the master shard
-		\item The slave leader will update it’s cache ahead of the async updates to the persistent store
+		\item Cache invalidation message are embedded into db replication stream
     \end{itemize}
 \end{frame}
 
